@@ -1,0 +1,47 @@
+const catchAsync = require('../utils/catchAsync')
+const httpStatus = require('http-status');
+const AppError = require('../utils/appError');
+const User = require('../models/user.model');
+const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
+
+const createLoginToken = catchAsync(async (data, res) => {
+    const token = await promisify(jwt.sign)({ data }, process.env.LOGIN_TOKEN, {
+        expiresIn: process.env.LOGIN_TOKEN_EXPIRES,
+    });
+    return res.status(httpStatus.OK).json({
+        status: 'success',
+        token,
+    })
+})
+
+exports.signup = catchAsync(async (req, res, next) => {
+    const user = new User(req.body);
+    const result = await user.save();
+    res.status(httpStatus.CREATED).json({
+        status: 'success',
+        data: {
+            result,
+        }
+    })
+})
+
+exports.login = catchAsync(async (req, res, next) => {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+        return next(new AppError('Wrong username or password'));
+    }
+
+    if (!await user.isCorrectPassword(password)) {
+        return next(new AppError('Wrong username or password'));
+    }
+
+    createLoginToken(user._id, res);
+
+})
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+
+})
