@@ -17,10 +17,15 @@ const Header = () => {
   `;
 
   const Input = styled.input`
-    width: 58%;
     background-color: rgba(255, 255, 255, 0.1);
     outline: none;
     border: none;
+  `;
+
+  const Search = styled.div`
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 58%;
+    border-radius: 12px;
   `;
 
   return (
@@ -29,7 +34,9 @@ const Header = () => {
         <div className="row">
           <div className="col-6">
             <Logo src={logo}></Logo>
-            <Input></Input>
+            <Search>
+              <Input></Input>
+            </Search>
           </div>
           <div className="col-6">Column</div>
         </div>
