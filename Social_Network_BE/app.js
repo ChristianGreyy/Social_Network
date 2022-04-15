@@ -8,12 +8,19 @@ const mongoose = require('mongoose');
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer, { /* options */ });
-
-
 
 const PORT = process.env.PORT || 8080;
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'OPTIONS, GET, POST, PUT, PATCH, DELETE'
+    );
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -27,14 +34,22 @@ app.use(router)
 mongoose.connect('mongodb://localhost/social_network_dev')
     .then(result => {
         console.log('connect database successfully');
+        // const server = app.listen(8080);
+        const httpServer = createServer(app);
+        const io = new Server(httpServer, {
+            cors: {
+                origin: "*",
+            },
+            transports: ["polling"],
+            maxHttpBufferSize: 8e6,
+        });
+        httpServer.listen(8080)
 
         io.on('connection', (socket) => {
             console.log('user conneciton')
+            socket.emit('test', "hahaha");
         })
 
-        httpServer.listen(PORT, () => {
-            console.log('server is listening on port ' + PORT)
-        })
     })
     .catch(err => {
         console.log(err);
