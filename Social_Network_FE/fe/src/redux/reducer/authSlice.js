@@ -1,30 +1,33 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axios from 'axios';
 
-export const login = createAsyncThunk('login', async () => {
-    try {
-        const res = await axios.post('http://localhost:8080/api/auth/login');
 
-        console.log(res)
-    } catch (err) {
-        console.log(err)
-    }
+export const loginApi = createAsyncThunk('api', async (email, password) => {
+    const res = await axios.post('http://localhost:8080/api/auth/login', {
+        email: 'truongthanhhung2k2@gmail.com',
+        password: '12345678'
+    });
+
+    console.log(res)
+
+    return res.data;
+
 })
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: '',
+    initialState: [],
     reducers: {
 
     },
     extraReducers: {
-        [login.pending]: (state, action) => {
+        [loginApi.pending]: (state, action) => {
             console.log('Đang xử lý');
         },
-        [login.fulfilled]: (state, action) => {
+        [loginApi.fulfilled]: (state, action) => {
             console.log('hoàn thành ')
         },
-        [login.rejected]: (state, action) => {
+        [loginApi.rejected]: (state, action) => {
             console.log('Đã lỗi');
         }
     }

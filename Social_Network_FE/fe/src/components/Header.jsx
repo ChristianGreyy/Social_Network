@@ -471,7 +471,7 @@ const Header = (props) => {
                 placeholder="Seach People, Pages, Groups etc"
               ></Input>
               <SearchIcon>
-                <i class="icofont-search"></i>
+                <i className="icofont-search"></i>
               </SearchIcon>
             </Search>
             <Description>{title}</Description>
@@ -481,15 +481,21 @@ const Header = (props) => {
               <>
                 <ListIcon>
                   <ItemIcon>
-                    <i style={{ cursor: "pointer" }} class="icofont-home"></i>
-                  </ItemIcon>
-                  <ItemIcon>
-                    <i style={{ cursor: "pointer" }} class="icofont-world"></i>
+                    <i
+                      style={{ cursor: "pointer" }}
+                      className="icofont-home"
+                    ></i>
                   </ItemIcon>
                   <ItemIcon>
                     <i
                       style={{ cursor: "pointer" }}
-                      class="icofont-question-circle"
+                      className="icofont-world"
+                    ></i>
+                  </ItemIcon>
+                  <ItemIcon>
+                    <i
+                      style={{ cursor: "pointer" }}
+                      className="icofont-question-circle"
                     ></i>
                   </ItemIcon>
                 </ListIcon>
@@ -513,10 +519,16 @@ const Header = (props) => {
               <>
                 <ListIcon>
                   <ItemIcon>
-                    <i style={{ cursor: "pointer" }} class="icofont-home"></i>
+                    <i
+                      style={{ cursor: "pointer" }}
+                      className="icofont-home"
+                    ></i>
                   </ItemIcon>
                   <ItemIcon onClick={handleFriend}>
-                    <i style={{ cursor: "pointer" }} class="icofont-user"></i>
+                    <i
+                      style={{ cursor: "pointer" }}
+                      className="icofont-user"
+                    ></i>
                     {checkFriend && (
                       <DropDown>
                         <DropDownList>
@@ -571,7 +583,10 @@ const Header = (props) => {
                     )}
                   </ItemIcon>
                   <ItemIcon onClick={handleNotification}>
-                    <i style={{ cursor: "pointer" }} class="icofont-alarm"></i>
+                    <i
+                      style={{ cursor: "pointer" }}
+                      className="icofont-alarm"
+                    ></i>
                     {checkNotification && (
                       <DropDown>
                         <DropDownList>
@@ -624,7 +639,10 @@ const Header = (props) => {
                     )}
                   </ItemIcon>
                   <ItemIcon onClick={handleMessage}>
-                    <i style={{ cursor: "pointer" }} class="icofont-chat"></i>
+                    <i
+                      style={{ cursor: "pointer" }}
+                      className="icofont-chat"
+                    ></i>
                     {checkMessage && (
                       <DropDown>
                         <DropDownList>
@@ -677,12 +695,15 @@ const Header = (props) => {
                     )}
                   </ItemIcon>
                   <ItemIcon>
-                    <i style={{ cursor: "pointer" }} class="icofont-world"></i>
+                    <i
+                      style={{ cursor: "pointer" }}
+                      className="icofont-world"
+                    ></i>
                   </ItemIcon>
                   <ItemIcon>
                     <i
                       style={{ cursor: "pointer" }}
-                      class="icofont-question-circle"
+                      className="icofont-question-circle"
                     ></i>
                   </ItemIcon>
                   <Profile style={{ display: "flex" }} onClick={handleProfile}>
@@ -728,7 +749,7 @@ const Header = (props) => {
                             >
                               <DropDownProfileItem>
                                 <DropDownProfileIcon>
-                                  <i class="icofont-user-alt-3"></i>
+                                  <i className="icofont-user-alt-3"></i>
                                 </DropDownProfileIcon>
                                 <DropDownProfileText>
                                   View Profile
@@ -744,7 +765,7 @@ const Header = (props) => {
                             >
                               <DropDownProfileItem>
                                 <DropDownProfileIcon>
-                                  <i class="icofont-edit"></i>
+                                  <i className="icofont-edit"></i>
                                 </DropDownProfileIcon>
                                 <DropDownProfileText>
                                   Edit Profile
@@ -760,7 +781,7 @@ const Header = (props) => {
                             >
                               <DropDownProfileItem>
                                 <DropDownProfileIcon>
-                                  <i class="icofont-settings-alt"></i>
+                                  <i className="icofont-settings-alt"></i>
                                 </DropDownProfileIcon>
                                 <DropDownProfileText>
                                   Account Setting
@@ -777,7 +798,7 @@ const Header = (props) => {
                             >
                               <DropDownProfileItem>
                                 <DropDownProfileIcon>
-                                  <i class="icofont-logout"></i>
+                                  <i className="icofont-logout"></i>
                                 </DropDownProfileIcon>
                                 <DropDownProfileText>
                                   Log Out
@@ -796,7 +817,7 @@ const Header = (props) => {
                   >
                     <i
                       style={{ cursor: "pointer" }}
-                      class="icofont-ui-settings"
+                      className="icofont-ui-settings"
                     ></i>
                     {checkDropDownSetting && (
                       <>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import styled, { keyframes } from "styled-components";
 import HeaderIntroduce from "../images/header__introduce.png";
 import { Link } from "react-router-dom";
-import { login } from "../redux/reducer/authSlice";
-import { useDispatch } from "react-redux";
+import { loginApi } from "../redux/reducer/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const Login = () => {
   const Introduce = styled.div`
@@ -251,8 +252,17 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
-    dispatch(login());
+  const [login, setLogin] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // useEffect(() => {
+  //   dispatch(loginApi(email, password));
+  // }, [login]);
+
+  const HandleSubmit = () => {
+    setLogin(!login);
   };
 
   return (
@@ -283,7 +293,7 @@ const Login = () => {
                 </LoginAreaLeftItemAvatar>
                 <LoginAreaLeftItemName>ChristianGrey</LoginAreaLeftItemName>
                 <LoginAreaLeftItemClose>
-                  <i class="icofont-close-line"></i>
+                  <i className="icofont-close-line"></i>
                 </LoginAreaLeftItemClose>
               </LoginAreaLeftItemRecent>
               <LoginAreaLeftItemRecent>
@@ -292,12 +302,12 @@ const Login = () => {
                 </LoginAreaLeftItemAvatar>
                 <LoginAreaLeftItemName>Quy</LoginAreaLeftItemName>
                 <LoginAreaLeftItemClose>
-                  <i class="icofont-close-line"></i>
+                  <i className="icofont-close-line"></i>
                 </LoginAreaLeftItemClose>
               </LoginAreaLeftItemRecent>
               <LoginAreaLeftItemAdd>
                 <LoginAreaLeftItemAddIcon>
-                  <i class="icofont-plus"></i>
+                  <i className="icofont-plus"></i>
                 </LoginAreaLeftItemAddIcon>
                 <LoginAreaLeftItemAddText>Add Account</LoginAreaLeftItemAddText>
               </LoginAreaLeftItemAdd>
@@ -306,7 +316,7 @@ const Login = () => {
           <LoginAreaRight className="col-6">
             <LoginAreaRightTitle>
               <LoginAreaRightTitleIcon>
-                <i class="icofont-key"></i>
+                <i className="icofont-key"></i>
               </LoginAreaRightTitleIcon>
               <LoginAreaRightTitleText>Login</LoginAreaRightTitleText>
             </LoginAreaRightTitle>
@@ -314,20 +324,27 @@ const Login = () => {
               Login again, you have recently signout from here
             </LoginAreaRightDes>
             <FormGroup>
-              <Input name="email" placeholder="Email"></Input>
+              <Input
+                // name="email"
+                value={email}
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              ></Input>
             </FormGroup>
             <FormGroup>
               <Input
                 name="password"
                 type="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               ></Input>
             </FormGroup>
             <FormGroup>
               <Button
                 type="submit"
                 value="Login"
-                onClick={handleSubmit}
+                onClick={HandleSubmit}
               ></Button>
             </FormGroup>
             <Register> Create New Signup</Register>
@@ -345,21 +362,21 @@ const Login = () => {
       <ListPeple>
         <ItemPeple>
           <ItemPeopleIcon>
-            <i class="icofont-tick-mark"></i>
+            <i className="icofont-tick-mark"></i>
           </ItemPeopleIcon>
           <ItemPeopleDes>Registerd Users</ItemPeopleDes>
           <ItemPeopleNumber>1,01,242</ItemPeopleNumber>
         </ItemPeple>
         <ItemPeple>
           <ItemPeopleIcon>
-            <i class="icofont-image"></i>
+            <i className="icofont-image"></i>
           </ItemPeopleIcon>
           <ItemPeopleDes>Posts Published</ItemPeopleDes>
           <ItemPeopleNumber>21,01,242</ItemPeopleNumber>
         </ItemPeple>
         <ItemPeple>
           <ItemPeopleIcon>
-            <i class="icofont-users-alt-3"></i>
+            <i className="icofont-users-alt-3"></i>
           </ItemPeopleIcon>
           <ItemPeopleDes>People Online</ItemPeopleDes>
           <ItemPeopleNumber>41,242</ItemPeopleNumber>
