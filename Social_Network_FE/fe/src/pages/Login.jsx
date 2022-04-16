@@ -2,267 +2,272 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import styled, { keyframes } from "styled-components";
 import HeaderIntroduce from "../images/header__introduce.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "../redux/reducer/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { unwrapResult } from "@reduxjs/toolkit";
+
+const Introduce = styled.div`
+  margin-top: 66px;
+  height: 261px;
+  width: 100%;
+  background: #495b72;
+  border-bottom: 1px solid #e1e8ed;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+`;
+
+const IntroduceTitle = styled.h1`
+  color: white;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 48px;
+`;
+
+const IntroduceDes = styled.div`
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  color: white;
+  margin-top: 4px;
+`;
+
+const IntroduceImage = styled.img`
+  width: 74%;
+  position: absolute;
+  bottom: 0;
+`;
+
+const LoginArea = styled.div`
+  padding-top: 50px;
+  background-color: #edf2f6;
+`;
+
+const LoginAreaLeft = styled.div`
+  border-right: 1px solid #47586d;
+  padding: 0 75px 0 180px;
+  height: 362px;
+`;
+
+const LoginAreaLeftTitle = styled.h6`
+  color: #535165;
+  text-align: left;
+  font-size: 1.5rem;
+  line-height: 32px;
+`;
+
+const LoginAreaLeftDes = styled.h6`
+  text-align: left;
+  color: #959ab5;
+  font-size: 13px;
+  line-height: 24px;
+`;
+
+const LoginAreaLeftList = styled.ul`
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  justify-content: space-between;
+`;
+
+const LoginAreaLeftItemRecent = styled.li`
+  cursor: pointer;
+  position: relative;
+`;
+
+const LoginAreaLeftItemAdd = styled.li`
+  width: 105px;
+  height: 140px;
+  background-color: white;
+  border: 1px solid dotted;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const LoginAreaLeftItemAddIcon = styled.div`
+  font-size: 30px;
+  color: #fa6342;
+`;
+
+const LoginAreaLeftItemAddText = styled.div`
+  color: #757a95;
+  font-size: 14px;
+  margin-top: 4px;
+`;
+
+const LoginAreaLeftItemAvatar = styled.div`
+  height: 105px;
+  width: 105px;
+  border-radius: 50%;
+  background-color: white;
+`;
+
+const LoginAreaLeftItemImage = styled.img`
+  width: 94%;
+  height: 94%;
+  border-radius: 50%;
+`;
+
+const LoginAreaLeftItemName = styled.div`
+  color: #535165;
+  margin-top: 5px;
+`;
+
+const LoginAreaLeftItemClose = styled.div`
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: white;
+`;
+
+const LoginAreaRight = styled.div`
+  height: 362px;
+  padding: 0 180px 0 75px;
+`;
+
+const LoginAreaRightTitle = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LoginAreaRightTitleIcon = styled.div`
+  font-size: 18px;
+`;
+
+const LoginAreaRightTitleText = styled.h6`
+  color: #535165;
+  margin-left: 6px;
+  font-weight: 500;
+  text-align: left;
+  font-size: 1.5rem;
+  line-height: 32px;
+`;
+
+const LoginAreaRightDes = styled.h6`
+  text-align: left;
+  color: #959ab5;
+  font-size: 13px;
+  line-height: 24px;
+  margin-bottom: 30px;
+`;
+
+const Form = styled.form``;
+
+const FormGroup = styled.div`
+  margin-bottom: 18px;
+  display: flex;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  height: 44px;
+  border-radius: 35px;
+  outline: none;
+  font-size: 15px;
+  border: none;
+  padding-left: 16px;
+`;
+
+const Button = styled.input`
+  width: 92px;
+  height: 40px;
+  background-color: #fa6342;
+  outline: none;
+  border: none;
+  color: white;
+  border-radius: 30px;
+`;
+
+const Register = styled.div`
+  color: #fa6342;
+  text-align: left;
+  cursor: pointer;
+  font-size: 15px;
+`;
+
+const RegisterDes = styled.div`
+  text-align: left;
+  color: #959ab5;
+  font-size: 12px;
+  margin-top: 12px;
+`;
+
+const RegisterPolicy = styled.span`
+  color: #fa6342;
+`;
+
+const ListPeple = styled.ul`
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  width: 99%;
+`;
+
+const ItemPeple = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 80px;
+`;
+
+const ItemPeopleIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: Center;
+  background-color: #fa6342;
+  width: 75px;
+  color: white;
+  height: 75px;
+  font-size: 24px;
+  border-radius: 50%;
+`;
+
+const ItemPeopleDes = styled.div`
+  color: #757a95;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  margin: 6px 0;
+`;
+
+const ItemPeopleNumber = styled.div`
+  color: #34465d;
+  font-size: 16px;
+  font-style: normal;
+`;
 
 const Login = () => {
-  const Introduce = styled.div`
-    margin-top: 66px;
-    height: 261px;
-    width: 100%;
-    background: #495b72;
-    border-bottom: 1px solid #e1e8ed;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-  `;
-
-  const IntroduceTitle = styled.h1`
-    color: white;
-    font-size: 40px;
-    font-weight: 500;
-    margin-top: 48px;
-  `;
-
-  const IntroduceDes = styled.div`
-    font-size: 14px;
-    letter-spacing: 0.1px;
-    color: white;
-    margin-top: 4px;
-  `;
-
-  const IntroduceImage = styled.img`
-    width: 74%;
-    position: absolute;
-    bottom: 0;
-  `;
-
-  const LoginArea = styled.div`
-    padding-top: 50px;
-    background-color: #edf2f6;
-  `;
-
-  const LoginAreaLeft = styled.div`
-    border-right: 1px solid #47586d;
-    padding: 0 75px 0 180px;
-    height: 362px;
-  `;
-
-  const LoginAreaLeftTitle = styled.h6`
-    color: #535165;
-    text-align: left;
-    font-size: 1.5rem;
-    line-height: 32px;
-  `;
-
-  const LoginAreaLeftDes = styled.h6`
-    text-align: left;
-    color: #959ab5;
-    font-size: 13px;
-    line-height: 24px;
-  `;
-
-  const LoginAreaLeftList = styled.ul`
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    margin-top: 40px;
-    justify-content: space-between;
-  `;
-
-  const LoginAreaLeftItemRecent = styled.li`
-    cursor: pointer;
-    position: relative;
-  `;
-
-  const LoginAreaLeftItemAdd = styled.li`
-    width: 105px;
-    height: 140px;
-    background-color: white;
-    border: 1px solid dotted;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    cursor: pointer;
-  `;
-
-  const LoginAreaLeftItemAddIcon = styled.div`
-    font-size: 30px;
-    color: #fa6342;
-  `;
-
-  const LoginAreaLeftItemAddText = styled.div`
-    color: #757a95;
-    font-size: 14px;
-    margin-top: 4px;
-  `;
-
-  const LoginAreaLeftItemAvatar = styled.div`
-    height: 105px;
-    width: 105px;
-    border-radius: 50%;
-    background-color: white;
-  `;
-
-  const LoginAreaLeftItemImage = styled.img`
-    width: 94%;
-    height: 94%;
-    border-radius: 50%;
-  `;
-
-  const LoginAreaLeftItemName = styled.div`
-    color: #535165;
-    margin-top: 5px;
-  `;
-
-  const LoginAreaLeftItemClose = styled.div`
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    cursor: pointer;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background-color: white;
-  `;
-
-  const LoginAreaRight = styled.div`
-    height: 362px;
-    padding: 0 180px 0 75px;
-  `;
-
-  const LoginAreaRightTitle = styled.div`
-    display: flex;
-    align-items: center;
-  `;
-
-  const LoginAreaRightTitleIcon = styled.div`
-    font-size: 18px;
-  `;
-
-  const LoginAreaRightTitleText = styled.h6`
-    color: #535165;
-    margin-left: 6px;
-    font-weight: 500;
-    text-align: left;
-    font-size: 1.5rem;
-    line-height: 32px;
-  `;
-
-  const LoginAreaRightDes = styled.h6`
-    text-align: left;
-    color: #959ab5;
-    font-size: 13px;
-    line-height: 24px;
-    margin-bottom: 30px;
-  `;
-
-  const Form = styled.form``;
-
-  const FormGroup = styled.div`
-    margin-bottom: 18px;
-    display: flex;
-  `;
-
-  const Input = styled.input`
-    width: 100%;
-    height: 44px;
-    border-radius: 35px;
-    outline: none;
-    font-size: 15px;
-    border: none;
-    padding-left: 16px;
-  `;
-
-  const Button = styled.input`
-    width: 92px;
-    height: 40px;
-    background-color: #fa6342;
-    outline: none;
-    border: none;
-    color: white;
-    border-radius: 30px;
-  `;
-
-  const Register = styled.div`
-    color: #fa6342;
-    text-align: left;
-    cursor: pointer;
-    font-size: 15px;
-  `;
-
-  const RegisterDes = styled.div`
-    text-align: left;
-    color: #959ab5;
-    font-size: 12px;
-    margin-top: 12px;
-  `;
-
-  const RegisterPolicy = styled.span`
-    color: #fa6342;
-  `;
-
-  const ListPeple = styled.ul`
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-    width: 99%;
-  `;
-
-  const ItemPeple = styled.li`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 80px;
-  `;
-
-  const ItemPeopleIcon = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: Center;
-    background-color: #fa6342;
-    width: 75px;
-    color: white;
-    height: 75px;
-    font-size: 24px;
-    border-radius: 50%;
-  `;
-
-  const ItemPeopleDes = styled.div`
-    color: #757a95;
-    font-size: 14px;
-    letter-spacing: 0.2px;
-    margin: 6px 0;
-  `;
-
-  const ItemPeopleNumber = styled.div`
-    color: #34465d;
-    font-size: 16px;
-    font-style: normal;
-  `;
-
   const dispatch = useDispatch();
 
   const [login, setLogin] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   dispatch(loginApi(email, password));
-  // }, [login]);
-
-  const HandleSubmit = () => {
-    setLogin(!login);
+  const HandleSubmit = async () => {
+    // setLogin(!login);
+    const resultAction = await dispatch(loginApi({ email, password }));
+    const originalPromiseResult = unwrapResult(resultAction);
+    if (originalPromiseResult.status == "success") {
+      navigate("/");
+    } else {
+      alert("please authenticaton");
+    }
   };
 
   return (

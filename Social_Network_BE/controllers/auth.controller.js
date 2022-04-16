@@ -27,15 +27,16 @@ exports.signup = catchAsync(async (req, res, next) => {
 })
 
 exports.login = catchAsync(async (req, res, next) => {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username: username });
+    const { email, password } = req.body;
+    console.log(email, password)
+    const user = await User.findOne({ email: email });
 
     if (!user) {
-        return next(new AppError('Wrong username or password'));
+        return next(new AppError('Wrong email or password'));
     }
 
     if (!await user.isCorrectPassword(password)) {
-        return next(new AppError('Wrong username or password'));
+        return next(new AppError('Wrong email or password'));
     }
 
     createLoginToken(user._id, res);
