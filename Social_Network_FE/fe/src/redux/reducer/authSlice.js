@@ -1,17 +1,17 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit'
 import axios from 'axios';
 
 
 export const loginApi = createAsyncThunk('api', async ({ email, password }) => {
-    const res = await axios.post('http://localhost:8080/api/auth/login', {
-        email,
-        password,
-    });
-
-    console.log(res)
-
-    return res.data;
-
+    try {
+        const res = await axios.post('http://localhost:8080/api/auth/login', {
+            email,
+            password,
+        });
+        return res.data;
+    } catch(err) {
+        return isRejectedWithValue(err.res.data)    
+    }
 })
 
 const authSlice = createSlice({

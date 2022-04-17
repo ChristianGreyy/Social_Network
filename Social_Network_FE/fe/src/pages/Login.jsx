@@ -261,13 +261,24 @@ const Login = () => {
 
   const HandleSubmit = async () => {
     // setLogin(!login);
-    const resultAction = await dispatch(loginApi({ email, password }));
-    const originalPromiseResult = unwrapResult(resultAction);
-    if (originalPromiseResult.status == "success") {
-      navigate("/");
-    } else {
-      alert("please authenticaton");
+    try {
+      const resultAction = await dispatch(loginApi({ email, password }));
+      if (resultAction.error) {
+        alert('sai mat khau roi boy')
+      }
+      const originalPromiseResult = unwrapResult(resultAction);
+      if (originalPromiseResult.status == "success") {
+        navigate("/");
+      } else {
+        console.log('iam here')
+        // alert("please authenticaton");
+      }
+      console.log(originalPromiseResult)
+    } catch (err) {
+      console.log(err)
     }
+    
+
   };
 
   return (
@@ -305,7 +316,7 @@ const Login = () => {
                 <LoginAreaLeftItemAvatar>
                   <LoginAreaLeftItemImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></LoginAreaLeftItemImage>
                 </LoginAreaLeftItemAvatar>
-                <LoginAreaLeftItemName>Quy</LoginAreaLeftItemName>
+                <LoginAreaLeftItemName>QuyMan</LoginAreaLeftItemName>
                 <LoginAreaLeftItemClose>
                   <i className="icofont-close-line"></i>
                 </LoginAreaLeftItemClose>
