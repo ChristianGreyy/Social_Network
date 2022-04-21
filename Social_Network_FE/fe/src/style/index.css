@@ -5,3 +5,161 @@ body {
 * {
     box-sizing: border-box;
 }
+
+/* sidebarscroolprofile */
+.ContainerScrolbarRight::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+/*slide_css */
+.settingSlide{
+  
+}
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css");
+
+/*hover slide_bar_left menu */
+.HoverIconTageName{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.HoverIconTageName1{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName1{
+    display:block; 
+}
+.IconMenu:hover .HoverIconTageName{
+   display:block; 
+}
+.HoverIconTageName2{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName2{
+    display:block; 
+}
+.HoverIconTageName3{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName3{
+    display:block; 
+}
+.HoverIconTageName4{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName4{
+    display:block; 
+}
+.HoverIconTageName5{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName5{
+    display:block; 
+}
+.HoverIconTageName6{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName6{
+    display:block; 
+}
+.HoverIconTageName7{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName7{
+    display:block; 
+}
+.HoverIconTageName8{
+    background-color: black;
+    width:6rem;
+    height:1.5rem;
+    position:absolute;
+    top:50%; 
+    left:120%;
+    border-radius:5px; 
+    color:white; 
+    text-align:center;
+    font-size: 1rem;
+    display: none;
+}
+.IconMenu:hover .HoverIconTageName8{
+    display:block; 
+}
