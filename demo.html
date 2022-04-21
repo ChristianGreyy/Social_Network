@@ -1,0 +1,71 @@
+
+<style>
+.accordion {
+  color: #444;
+  cursor: pointer;
+  width: 13rem;
+  font-size: 15px;
+  transition: 0.4s;
+  padding:5px 0; 
+  border-bottom: 0.1px black solid;
+  margin-left:2rem; 
+}
+
+.panel {
+  display: none;
+  background-color: white;
+  overflow: hidden;
+  margin-left:2rem; 
+  width: 13rem;
+  padding:1.5rem 0; 
+
+}
+.panel a{
+  text-decoration: none;
+  margin:10px 0; 
+}
+.panel1{
+  border-bottom: 1px black solid;
+  padding:10px 0; 
+
+}
+.accordion:hover{
+  color:#fa6342; 
+}
+.panel1:hover {
+  color:#fa6342; 
+
+}
+.csspanel{
+  display: flex;
+  
+}
+</style>
+
+
+<div class="accordion">Section 1</div>
+<div class="panel">
+  <!-- <div class="csspanel"> -->
+    <div class="panel1"><a>Option</a></div>
+    <div class="panel1"><a>Option</a></div>
+    <div class="panel1"><a>Option</a></div>
+  <!-- </div> -->
+</div>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
+
+</html>
