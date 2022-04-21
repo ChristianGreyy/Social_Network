@@ -264,21 +264,20 @@ const Login = () => {
     try {
       const resultAction = await dispatch(loginApi({ email, password }));
       if (resultAction.error) {
-        alert('sai mat khau roi boy')
+        alert("sai mat khau roi boy");
       }
       const originalPromiseResult = unwrapResult(resultAction);
       if (originalPromiseResult.status == "success") {
-        navigate("/");
+        localStorage.setItem("token", originalPromiseResult.token);
+        window.location.href = "/";
       } else {
-        console.log('iam here')
+        console.log("iam here");
         // alert("please authenticaton");
       }
-      console.log(originalPromiseResult)
+      console.log(originalPromiseResult);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-    
-
   };
 
   return (
