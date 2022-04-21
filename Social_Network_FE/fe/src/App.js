@@ -1,17 +1,20 @@
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import NotFound from './pages/NotFound';
-import Home from './pages/Home';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
 import AboutProfile from './pages/profile/AboutProfile'
-import User from './pages/User';
-import './style/index.css'
+import Home from "./pages/Home";
+import User from "./pages/User";
+import Messages from "./pages/Messages";
+import "./style/index.css";
 import { io } from "socket.io-client";
-
+import authContext from "./contexts/authContext";
+import { useContext } from "react";
 
 function App() {
-
-  const socket = io('http://localhost:8080');
+  const socket = io("http://localhost:8080");
+  const token = useContext(authContext);
+  // console.log(token);
   // socket.on('test', (arg) => {
   //   console.log(arg)
   // })
@@ -24,11 +27,12 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/user' element={<User />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/' element={<Home />} />
-          <Route path='*' element={<NotFound />} />
+          <Route path="/user" element={<User />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/messages" element={token ? <Messages /> : <Login />} />
+          <Route path="/" element={token ? <Home /> : <Login />} />
           <Route path='/about' element={<AboutProfile />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>
