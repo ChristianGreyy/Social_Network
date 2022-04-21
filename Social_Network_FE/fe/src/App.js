@@ -3,15 +3,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
-<<<<<<< HEAD
 import AboutProfile from './pages/profile/AboutProfile'
-=======
 import User from './pages/User';
 import './style/index.css'
 import { io } from "socket.io-client";
 
 
->>>>>>> master
 function App() {
 
   const socket = io('http://localhost:8080');
