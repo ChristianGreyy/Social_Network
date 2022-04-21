@@ -2,6 +2,28 @@ const catchAsync = require('../utils/catchAsync')
 const httpStatus = require('http-status');
 const AppError = require('../utils/appError');
 const User = require('../models/user.model');
+const { response } = require('express');
+
+exports.aggregate = async (req, res, next) => {
+    const user = await User.aggregate([
+        {
+            $match: {
+                role: 'user'
+            }
+        },
+        {
+            $project: {
+                password: 1,
+            }
+        }
+
+    ])
+
+    res.json({
+        user,
+    })
+
+}
 
 exports.getUsers = catchAsync(async (req, res, next) => {
     const users = await User.find();
