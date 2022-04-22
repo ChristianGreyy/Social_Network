@@ -23,4 +23,4 @@ const conversationSchema = new Schema(
   }
 );
 
-module.export = new Model("Conversation", conversationSchema);
+module.exports = mongoose.model("Conversation", conversationSchema);

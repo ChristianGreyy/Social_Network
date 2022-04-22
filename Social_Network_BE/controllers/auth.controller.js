@@ -6,12 +6,12 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const { transporter, message } = require("../services/email");
 
-const createLoginToken = catchAsync(async (data, res) => {
-  const token = await promisify(jwt.sign)({ data }, process.env.LOGIN_TOKEN, {
-    expiresIn: process.env.LOGIN_TOKEN_EXPIRES,
+const createLoginToken = (async (req, res, next, data) => {
+  const token = await promisify(jwt.sign)( data , process.env.LOGIN_TOKEN, {
+      expiresIn: process.env.LOGIN_TOKEN_EXPIRES,
   });
-  return res.status(httpStatus.OK).json({
-    status: "success",
+    return res.status(httpStatus.OK).json({
+  status: "success",
     token,
   });
 });
@@ -19,6 +19,7 @@ const createLoginToken = catchAsync(async (data, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   const user = new User(req.body);
   const result = await user.save();
+
   await transporter.sendMail({html: message(result.email)}, function(err, info) {
     if(err) {
       console.log(err);
@@ -36,8 +37,12 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email, password);
   const user = await User.findOne({ email: email });
+
+  const data = {
+    userId: user._id,
+    email: user.email,
+  }
 
   if (!user) {
     return next(new AppError("Wrong email or password"));
@@ -47,7 +52,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Wrong email or password"));
   }
 
-  createLoginToken(user._id, res);
+  createLoginToken(req, res, next, data);
 });
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {});

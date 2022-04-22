@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import styled, { keyframes } from "styled-components";
 import Messenger from "../components/messages/Messenger";
 import BoxChat from "../components/messages/BoxChat";
+import Profile from "../components/messages/Profile";
 
 const MessengerContainer = styled.div`
   margin-top: 66px;
@@ -21,12 +22,12 @@ const Messages = () => {
           </div>
           <div
             className="col-5"
-            style={{ width: "46%", padding: "0", height: "100%" }}
+            style={{ width: "48%", padding: "0", height: "100%" }}
           >
             <BoxChat></BoxChat>
           </div>
-          <div className="col-3" style={{ width: "27%" }}>
-            hihihih
+          <div className="col-3" style={{ width: "25%" }}>
+            <Profile></Profile>
           </div>
         </div>
       </MessengerContainer>

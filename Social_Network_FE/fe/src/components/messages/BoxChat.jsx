@@ -122,6 +122,8 @@ const BottomMessages = styled.div`
   height: 60px;
   width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const InputMessages = styled.input`
@@ -132,7 +134,130 @@ const InputMessages = styled.input`
   padding-left: 12px;
 `;
 
+const LikeMessages = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffd300;
+  font-size: 28px;
+  margin-right: 12px;
+`;
+
+const ListIcons = styled.div`
+  position: absolute;
+  top: -230px;
+  box-shadow: -7px 10px 20px rgb(0 0 0 / 10%);
+  display: none;
+  flex-wrap: wrap;
+  padding: 10px;
+  margin: 0;
+  list-style: none;
+  right: 0%;
+  width: 328px;
+  background: white;
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 20px solid white;
+    bottom: -18px;
+    right: 2px;
+  }
+`;
+const Icons = styled.div`
+  margin-right: 12px;
+  position: relative;
+
+  &:hover ${ListIcons} {
+    display: flex;
+  }
+`;
+
+const IconSmile = styled.div`
+  font-size: 28px;
+  color: #ffd300;
+  cursor: pointer;
+`;
+
+const ItemIcon = styled.div`
+  margin: 4px;
+  cursor: pointer;
+`;
+
 const BoxChat = () => {
+  const ArrayIcons = [
+    "😀",
+    "😃",
+    "😄",
+    "😁",
+    "😆",
+    "😅",
+    "😂",
+    "🤣",
+    "🥲",
+    "😓",
+    "😊",
+    "😇",
+    "🙂",
+    "🙃",
+    "😉",
+    "😌",
+    "😍",
+    "🥰",
+    "😘",
+    "😗",
+    "😙",
+    "😚",
+    "😋",
+    "😛",
+    "😝",
+    "😜",
+    "🤪",
+    "🤨",
+    "🧐",
+    "🤓",
+    "😎",
+    "🥸",
+    "🤩",
+    "🥳",
+    "😏",
+    "😒",
+    "😞",
+    "😔",
+    "😟",
+    "😕",
+    "🙁",
+    "☹️",
+    "😣",
+    "😖",
+    "😫",
+    "😩",
+    "🥺",
+    "😢",
+    "😭",
+    "😤",
+    "😠",
+    "😡",
+    "🤬",
+    "🤯",
+    "😳",
+    "🥵",
+    "🥶",
+    "😱",
+    "😨",
+    "😰",
+    "😥",
+    "🤗",
+    "🤔",
+    "🤭",
+    "🤫",
+    "🥴",
+  ];
+
   return (
     <BoxChatContainer>
       <Heading>
@@ -170,7 +295,7 @@ const BoxChat = () => {
         <ItemMessagesSender>
           <MessageInfo>
             <Message>
-              Good, iam too, because i want to become fullstack developer web
+              Good, iam too, because i want to become backend developer web
             </Message>
             <Avatar src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></Avatar>
           </MessageInfo>
@@ -178,6 +303,20 @@ const BoxChat = () => {
       </ListMessages>
       <BottomMessages>
         <InputMessages placeholder="Write your message here.."></InputMessages>
+        <Icons>
+          <IconSmile>
+            <i class="icofont-wink-smile"></i>
+          </IconSmile>
+          <ListIcons>
+            {ArrayIcons &&
+              ArrayIcons.map((item) => {
+                return <ItemIcon>{item}</ItemIcon>;
+              })}
+          </ListIcons>
+        </Icons>
+        <LikeMessages>
+          <i class="icofont-like"></i>
+        </LikeMessages>
       </BottomMessages>
     </BoxChatContainer>
   );

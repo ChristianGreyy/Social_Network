@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 exports.transporter = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com'",
+  host: "smtp.gmail.com",
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
@@ -11,7 +11,6 @@ exports.transporter = nodemailer.createTransport({
 });
 
 exports.message = (email) => {
-  console.log(email);
   return {
     from: process.env.ACCOUNT_EMAIL,
     to: "truongthanhhung2k2@gmail.com",

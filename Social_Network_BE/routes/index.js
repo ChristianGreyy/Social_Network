@@ -3,6 +3,7 @@ const router = express.Router();
 const globalErrorHandler = require('../middlewares/error');
 const userRouter = require('./user.route')
 const authRouter = require('./auth.route');
+const messageRouter = require('./messenger.route');
 
 const defaultRoutes = [
   {
@@ -12,6 +13,10 @@ const defaultRoutes = [
   {
     path: '/api/auth',
     route: authRouter,
+  },
+  {
+    path: '/api/message',
+    route: messageRouter,
   }
 ];
 

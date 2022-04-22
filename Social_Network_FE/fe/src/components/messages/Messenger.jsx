@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
+import axios from "axios";
 
 const MessngerContainer = styled.div`
   height: 100%;
@@ -121,7 +122,16 @@ const NowStatus = styled.div`
   transform: translate(-50%, 0);
 `;
 
-const messenger = () => {
+const Messenger = () => {
+  const [users, setUsers] = useState(null);
+
+  useEffect(async () => {
+    const data = await axios.get("http://localhost:8080/api/user");
+    setUsers(data.data.data.users);
+  }, []);
+
+  console.log(users);
+
   return (
     <MessngerContainer>
       <HeadingMessage>
@@ -139,7 +149,7 @@ const messenger = () => {
       <ListMessenger>
         <ItemMessenger>
           <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
+            <AvatarImage src="http://localhost:8080/images/avatar.png"></AvatarImage>
             <AvatarStatus></AvatarStatus>
           </Avatar>
           <Desscription>
@@ -243,4 +253,4 @@ const messenger = () => {
   );
 };
 
-export default messenger;
+export default Messenger;

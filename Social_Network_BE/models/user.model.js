@@ -49,7 +49,11 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Conversation',
         }
-    ]
+    ],
+    avatar: {
+        type: String,
+        default: 'http://localhost:8080/images/avatar.png'
+    }
 }, {
     timestamps: true,
 })

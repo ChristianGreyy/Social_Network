@@ -37,7 +37,10 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 })
 
 exports.getUser = catchAsync(async (req, res, next) => {
-    const user = await User.findOne({ _id: req.body._id }).lean();
+
+    console.log(req.user);
+
+    const user = await User.findOne({ _id: req.params.userId }).lean();
     res.status(httpStatus.OK).json({
         status: 'success',
         data: {

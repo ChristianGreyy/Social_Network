@@ -1,7 +1,12 @@
 const express = require("express");
-const messengerController = require("../controllers/messenger.controller");
 const messengerRouter = express.Router();
+const messengerController = require("../controllers/messenger.controller");
+const auth = require('../middlewares/auth');
 
-messengerRouter.get("/:senderId", messengerController.getMessages);
+messengerRouter.get("/:receiverId", auth, messengerController.getMessages);
+messengerRouter.post("/:receiverId", auth, messengerController.postMessage);
 
-messengerRouter.post("/createMessage", messengerController.createMessage);
+
+// messengerRouter.post("/createMessage", auth, messengerController.createMessage);
+
+module.exports = messengerRouter;
