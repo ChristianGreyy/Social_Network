@@ -1,6 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useContext, useState } from "react";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import authContext from "../../contexts/authContext";
+import axios from "axios";
+import socketContext from "../../contexts/socketContext";
+import jwt_decode from "jwt-decode";
 
 const BoxChatContainer = styled.div`
   height: 100%;
@@ -188,6 +192,17 @@ const ItemIcon = styled.div`
   cursor: pointer;
 `;
 
+const Submit = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #ffd300;
+`;
+
 const BoxChat = () => {
   const ArrayIcons = [
     "😀",
@@ -258,35 +273,161 @@ const BoxChat = () => {
     "🥴",
   ];
 
+  const params = useParams();
+  const token = useContext(authContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [userId, setUserId] = useState(null);
+  const [messages, setMessages] = useState(null);
+  const [user, setUser] = useState(null);
+  const [myUser, setMyUser] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+
+  // Fetch the first user chat
+  const fetchMessenger = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/message", {
+        headers: {
+          authorization: token,
+        },
+      });
+      const messengers = res.data.messengers;
+      const firstId = messengers[0].userId;
+      navigate(`/messages/${firstId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Fetch when onclick the messenger
+  const fetchBoxChat = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/api/message/${params.userId}`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      // console.log(res.data.data.messengers);
+      setMessages(res.data.data.messengers);
+      res.data.data.messengers.forEach((msg) => {
+        if (params.userId == msg.senderId._id) {
+          setUser(msg.senderId);
+        } else if (params.userId == msg.receiverId._id) {
+          setUser(msg.receiverId);
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // when click user messenger
+  useEffect(() => {
+    if (params.userId) {
+      fetchBoxChat();
+    } else {
+      fetchMessenger();
+    }
+  }, [params.userId]);
+
+  const decoded = jwt_decode(token);
+  const myUserId = decoded.userId;
+
+  // console.log(token);
+
+  const fetchUser = async (myUserId) => {
+    try {
+      const res = await axios(`http://localhost:8080/api/user/${myUserId}`, {
+        headers: {
+          authorization: token,
+        },
+      });
+      const data = res.data.data;
+      const user = data.user;
+      setMyUser(user);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser(myUserId);
+  }, []);
+
+  console.log(myUser);
+
+  const socket = useContext(socketContext);
+
+  const handleOnChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    socket.emit("/client-to-server/postMessage", {
+      inputValue,
+      userId: user._id,
+      myUserId: myUser._id,
+    });
+    setInputValue("");
+  };
+
   return (
     <BoxChatContainer>
       <Heading>
         <Link to="/" style={{ textDecoration: "none" }}>
           <HeadingLeft>
             <HeadingAvatar>
-              <HeadingImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></HeadingImage>
+              <HeadingImage src={user ? user.avatar : ""}></HeadingImage>
               <HeadingOnline></HeadingOnline>
             </HeadingAvatar>
             <Des>
-              <NameDes>ChristianGrey</NameDes>
+              <NameDes>
+                {user ? user.lastname.concat(" ").concat(user.firstname) : ""}
+              </NameDes>
               <StatusDes>Online</StatusDes>
             </Des>
           </HeadingLeft>
         </Link>
         <HeadingRight>
           <IconOptions>
-            <i class="icofont-phone"></i>
+            <i className="icofont-phone"></i>
           </IconOptions>
           <IconOptions>
-            <i class="icofont-video"></i>
+            <i className="icofont-video"></i>
           </IconOptions>
           <IconOptions>
-            <i class="icofont-exclamation-circle"></i>
+            <i className="icofont-exclamation-circle"></i>
           </IconOptions>
         </HeadingRight>
       </Heading>
       <ListMessages>
-        <ItemMessagesReceiver>
+        {messages &&
+          messages.map((msg, index) => {
+            if (params.userId == msg.senderId._id) {
+              return (
+                <ItemMessagesReceiver key={msg._id}>
+                  <MessageInfo>
+                    <Avatar src={msg.senderId.avatar}></Avatar>
+                    <Message>{msg.content}</Message>
+                  </MessageInfo>
+                </ItemMessagesReceiver>
+              );
+            } else {
+              return (
+                <ItemMessagesSender key={msg._id}>
+                  <MessageInfo>
+                    <Message>{msg.content}</Message>
+                    <Avatar src={msg.senderId.avatar}></Avatar>
+                  </MessageInfo>
+                </ItemMessagesSender>
+              );
+            }
+          })}
+        {/* <ItemMessagesReceiver>
           <MessageInfo>
             <Avatar src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></Avatar>
             <Message>I'm learning Nodejs</Message>
@@ -299,24 +440,39 @@ const BoxChat = () => {
             </Message>
             <Avatar src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></Avatar>
           </MessageInfo>
-        </ItemMessagesSender>
+        </ItemMessagesSender> */}
       </ListMessages>
       <BottomMessages>
-        <InputMessages placeholder="Write your message here.."></InputMessages>
-        <Icons>
-          <IconSmile>
-            <i class="icofont-wink-smile"></i>
-          </IconSmile>
-          <ListIcons>
-            {ArrayIcons &&
-              ArrayIcons.map((item) => {
-                return <ItemIcon>{item}</ItemIcon>;
-              })}
-          </ListIcons>
-        </Icons>
-        <LikeMessages>
-          <i class="icofont-like"></i>
-        </LikeMessages>
+        <InputMessages
+          placeholder="Write your message here.."
+          value={inputValue}
+          onChange={handleOnChange}
+        ></InputMessages>
+        {inputValue && (
+          <>
+            <Submit onClick={handleSubmit}>
+              <i className="icofont-location-arrow"></i>
+            </Submit>
+          </>
+        )}
+        {!inputValue && (
+          <>
+            <Icons>
+              <IconSmile>
+                <i className="icofont-wink-smile"></i>
+              </IconSmile>
+              <ListIcons>
+                {ArrayIcons &&
+                  ArrayIcons.map((item, index) => {
+                    return <ItemIcon key={index}>{item}</ItemIcon>;
+                  })}
+              </ListIcons>
+            </Icons>
+            <LikeMessages>
+              <i className="icofont-like"></i>
+            </LikeMessages>
+          </>
+        )}
       </BottomMessages>
     </BoxChatContainer>
   );

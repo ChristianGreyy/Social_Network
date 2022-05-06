@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import authContext from "../../contexts/authContext";
 
 const MessngerContainer = styled.div`
   height: 100%;
@@ -123,131 +125,76 @@ const NowStatus = styled.div`
 `;
 
 const Messenger = () => {
-  const [users, setUsers] = useState(null);
+  const token = useContext(authContext);
+  const [messengers, setMessengers] = useState(null);
 
-  useEffect(async () => {
-    const data = await axios.get("http://localhost:8080/api/user");
-    setUsers(data.data.data.users);
+  // fetch API users
+
+  // useEffect(async () => {
+  //   console.log("ok");
+  // }, []);
+
+  const fetchMessenger = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/message", {
+        headers: {
+          authorization: token,
+        },
+      });
+      const messengers = res.data.messengers;
+      setMessengers(messengers);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessenger();
   }, []);
 
-  console.log(users);
+  const handleOnclickUser = (e) => {
+    const length = e.target.className;
+    // alert(e.target.className[length - 1]);
+  };
 
   return (
     <MessngerContainer>
       <HeadingMessage>
         <TitleHeadingMessage>Chat Messages</TitleHeadingMessage>
         <IconHeadingMessage>
-          <i class="icofont-ui-settings"></i>
+          <i className="icofont-ui-settings"></i>
         </IconHeadingMessage>
       </HeadingMessage>
       <Search>
         <InputSearch placeholder="Search Friend..."></InputSearch>
         <IconSearch>
-          <i class="icofont-search"></i>
+          <i className="icofont-search"></i>
         </IconSearch>
       </Search>
       <ListMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="http://localhost:8080/images/avatar.png"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-          <NowStatus></NowStatus>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
-        <ItemMessenger>
-          <Avatar>
-            <AvatarImage src="https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/277904683_355457749973025_4136143877988181490_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=Vmtp-VcWZ28AX_cyMPm&_nc_ht=scontent.fhan5-10.fna&oh=03_AVL-RpyHECaJBWzW1nErsXSu7W2QHT3dwjX-DIczWRyYjg&oe=627DD276"></AvatarImage>
-            <AvatarStatus></AvatarStatus>
-          </Avatar>
-          <Desscription>
-            <Name>ChristianGrey</Name>
-            <BriefMessage>Hi man, my name is Hung - 2hr ago</BriefMessage>
-          </Desscription>
-        </ItemMessenger>
+        {messengers &&
+          messengers.map((msg) => {
+            const path = "/messages/" + msg.userId;
+            return (
+              <Link
+                key={msg.userId}
+                to={path}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <ItemMessenger key={msg.userId} onClick={handleOnclickUser}>
+                  <Avatar>
+                    <AvatarImage src={msg.avatar}></AvatarImage>
+                    <AvatarStatus></AvatarStatus>
+                  </Avatar>
+                  <Desscription>
+                    <Name>{msg.fullname}</Name>
+                    <BriefMessage>{msg.lastMessage} - 2hr ago</BriefMessage>
+                  </Desscription>
+                  <NowStatus></NowStatus>
+                </ItemMessenger>
+              </Link>
+            );
+          })}
       </ListMessenger>
     </MessngerContainer>
   );

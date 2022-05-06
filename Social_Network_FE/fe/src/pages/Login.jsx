@@ -267,8 +267,17 @@ const Login = () => {
         alert("sai mat khau roi boy");
       }
       const originalPromiseResult = unwrapResult(resultAction);
+      const TIMESTAMP = Date.now();
+
       if (originalPromiseResult.status == "success") {
-        localStorage.setItem("token", originalPromiseResult.token);
+        localStorage.setItem(
+          "token",
+          originalPromiseResult.token,
+          JSON.stringify({
+            initial: TIMESTAMP,
+            expiresOn: TIMESTAMP + 1000 * 60 * 60 * 24,
+          })
+        );
         window.location.href = "/";
       } else {
         console.log("iam here");

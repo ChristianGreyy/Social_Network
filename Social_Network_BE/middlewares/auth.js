@@ -1,12 +1,15 @@
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
 const AppError = require("../utils/appError");
-const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
 
-module.exports = catchAsync(async (req, res, next) => { 
+module.exports = catchAsync(async (req, res, next) => {
   const token = req.headers.authorization;
-  
+
+  console.log(token);
+  // console.log(token);
+
   if (!token) {
     return next(new AppError("Please authorization"));
   }
@@ -15,8 +18,8 @@ module.exports = catchAsync(async (req, res, next) => {
 
   const user = await User.findById(userId);
 
-  if(!user) {
-    return next(new AppError("Please authorization"))
+  if (!user) {
+    return next(new AppError("Please authorization"));
   }
 
   req.user = user;

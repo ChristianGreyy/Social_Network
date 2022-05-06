@@ -6,7 +6,7 @@ const conversationSchema = new Schema(
     content: {
       type: String,
     },
-    iamge: {
+    image: {
       type: String,
     },
     senderId: {
