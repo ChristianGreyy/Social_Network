@@ -1,6 +1,8 @@
 const catchAsync = require("../utils/catchAsync");
 const httpStatus = require("http-status");
 const AppError = require("../utils/appError");
+const { userService } = require("../services");
+
 const User = require("../models/user.model");
 const { response } = require("express");
 
@@ -24,7 +26,7 @@ exports.aggregate = async (req, res, next) => {
 };
 
 exports.getUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
+  const users = await userService.getUsers();
   res.status(httpStatus.OK).json({
     status: "success",
     data: {

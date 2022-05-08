@@ -17,8 +17,11 @@ import { useParams } from "react-router-dom";
 function App() {
   const token = useContext(authContext);
   const [user, setUser] = useState(null);
-  const decoded = jwt_decode(token);
-  const { userId } = decoded;
+  let userId = "";
+  if (token) {
+    const decoded = jwt_decode(token);
+    userId = decoded.userId;
+  }
 
   const fetchUser = async (userId) => {
     try {

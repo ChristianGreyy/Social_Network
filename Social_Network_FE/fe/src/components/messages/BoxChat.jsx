@@ -358,7 +358,7 @@ const BoxChat = () => {
     fetchUser(myUserId);
   }, []);
 
-  console.log(myUser);
+  // console.log(myUser);
 
   const socket = useContext(socketContext);
 
@@ -371,6 +371,9 @@ const BoxChat = () => {
       inputValue,
       userId: user._id,
       myUserId: myUser._id,
+    });
+    socket.on("/server-to-client/postMessage", (messengers) => {
+      setMessages(messengers);
     });
     setInputValue("");
   };

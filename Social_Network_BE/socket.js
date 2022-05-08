@@ -17,13 +17,28 @@ const socketOptions = (httpServer) => {
       "/client-to-server/postMessage",
       async ({ inputValue, userId, myUserId }) => {
         console.log(userId, myUserId);
-        const messenger = new Messenger({
+        let messenger = new Messenger({
           content: inputValue,
           receiverId: userId,
           senderId: myUserId,
         });
+
         await messenger.save();
-        io.emit("/server-to-client/postMessage", messenger);
+        const messengers = await Messenger.find({
+          $or: [
+            {
+              senderId: userId,
+              receiverId: myUserId,
+            },
+            {
+              senderId: myUserId,
+              receiverId: userId,
+            },
+          ],
+        })
+          .populate("receiverId")
+          .populate("senderId");
+        io.emit("/server-to-client/postMessage", messengers);
       }
     );
   });
